@@ -1,0 +1,218 @@
+@startuml
+left to right direction
+actor Клиент as Client
+actor Барыга as Sidor
+actor Сталкер as Stalker
+actor Информатор as Informer
+actor "Продавец оружия" as Oruzhie
+actor Курьер as Curier
+
+
+    usecase "Выставить заказ" as NewOrder
+    usecase "Заполнить информацию" as NewInfo
+    usecase "Опубликовать" as Pub
+
+    NewOrder ..> Pub : "Включает"
+    NewOrder ..> NewInfo : "Включает"
+
+    usecase "Посмотреть данные об артефакте" as Artefact
+    usecase "Открыть список известных артефактов" as ListArtefacts
+
+    Artefact .> ListArtefacts : "Включает"
+
+    usecase "Опубликовать" as Pub
+
+    usecase "Создать заказ по шаблону" as TemaplateOrder
+    usecase "Выбрать шаблон артефакта" as Temaplate
+    
+    TemaplateOrder ..> Temaplate : "Включает"
+    TemaplateOrder ..> Pub : "Включает" 
+    TemaplateOrder ..> NewInfo : "Включает"
+
+    usecase "Принять заказ" as AcceptOrder
+    usecase "Уведомление" as Notice
+    usecase "Получить уведомление о новом заказе" as NoticeOrder
+
+    Pub ..> Notice : "Создает"
+    NoticeOrder <... Notice : "Информирует"
+
+
+
+    usecase "Принять заказ" as AcceptOrder
+    usecase "Открыть список непринятых заказов" as ListNotAcceptedOrders
+
+    AcceptOrder .> ListNotAcceptedOrders : "Включает"
+
+    usecase "Предложить заказ Артефакта" as Order
+    usecase "Открыть список сталкеров" as SList
+    usecase "Выбрать сталкера" as SChoose
+    usecase "Выбрать заказ" as AChoose
+    usecase "Открыть список активных заказов" as AList
+    usecase "Отдать заказ курьеру" as SReadyOrderToCourier
+    
+
+    usecase "Новый заказ" as SNewOrder
+    usecase "Принять заказ" as Accept
+    usecase "Отказаться от заказа" as Reject
+    usecase "Завершить заказ" as Complete
+
+    usecase "Открыть список с информацией" as SSList
+    usecase "Выбрать нужный заказ" as SSChoose
+    usecase "Купить информацию" as SSBuyInformation
+    usecase "Выставить заказ на информацию" as SSOrder
+    usecase "Заполнить информацию об заказе" as SSInfo 
+    SSOrder .> SSInfo : "Включает"
+    SSChoose .> SSList : "Включает"
+    SSBuyInformation .> SSChoose : "Включает"
+    
+
+
+
+    Order ..> SChoose : "Выполнить" 
+    Order .> AChoose : "Выполнить"
+
+    AChoose .> AList : "Включает"
+    SChoose .> SList : "Включает"
+    SReadyOrderToCourier ..> SChoose : "Включает"
+
+    Order ..> SNewOrder : "Создает"
+
+    SNewOrder <.. Accept : "Включает"
+    SNewOrder <.. Reject: "Включает"
+    SNewOrder <.. Complete: "Включает"
+
+    SChoose ..> SNewOrder : "Уведомляет о"
+
+    usecase "Принять заказ на оружие|артефакт" as COrder
+    usecase "Доставить заказ" as CFinalOrder
+
+Curier -- COrder
+Curier -- CFinalOrder
+
+    usecase "Продать оружие" as OSend
+    usecase "Принять заказ на оружие" as OAcceptSend
+    usecase "Передать оружие курьеру" as OSendCurier
+
+OSend -- Oruzhie 
+OAcceptSend -- Oruzhie 
+OSendCurier -- Oruzhie 
+
+    usecase "Выставить информацию об артефакте на продажу" as IArt
+    usecase "Выставить карту аномалий на продажу" as IMap
+    usecase "Посмотреть список заказов на информацию об артефакте/карте аномалий" as IOrdes
+    usecase "Продать информацию об артефакте по заказу" as ISendArt
+    usecase "Продать карту аномалий по заказу" as ISendMap
+
+
+
+
+IArt -- Informer
+IMap -- Informer
+IOrdes -- Informer
+ISendArt -- Informer
+ISendMap -- Informer
+
+
+
+Client -- Artefact
+Client -- ListArtefacts
+Client -- NewOrder
+
+Sidor -- Order
+Sidor -- AList
+' Sidor -- SList
+Sidor -- AcceptOrder
+Sidor -- ListNotAcceptedOrders
+Sidor --- SReadyOrderToCourier
+
+Accept -- Stalker
+Reject -- Stalker
+Complete -- Stalker
+
+Client -- TemaplateOrder
+Sidor -- NoticeOrder
+
+SSBuyInformation -- Stalker
+SSList -- Stalker
+SSOrder -- Stalker 
+
+' any
+usecase "Открыть личный профиль" as AProfile
+usecase "Изменить информацию в личном профиле" as AChangeProfile
+usecase "Открыть список пользователей" as AUsers
+usecase "Отфильтровать список пользователей по ролям" as AFilter
+usecase "Найти пользователя в списке" as AFind
+usecase "Открыть профиль другого пользователя" as AOpenProfile
+usecase "Добавить пользователя в контакты" as AAddContact
+usecase "Чат" as AChat
+usecase "Открыть список известных артефактов" as AArts
+usecase "Оплатить услугу" as AOplata
+
+
+Client -- AProfile 
+Client -- AChangeProfile 
+Client -- AUsers 
+Client -- AFilter 
+Client -- AFind 
+Client -- AOpenProfile 
+Client -- AAddContact 
+Client -- AChat 
+Client -- AArts 
+Client -- AOplata 
+
+
+Sidor -- AProfile
+Sidor -- AChangeProfile
+Sidor -- AUsers
+Sidor -- AFilter
+Sidor -- AFind
+Sidor -- AOpenProfile
+Sidor -- AAddContact
+Sidor -- AChat
+Sidor -- AArts
+Sidor -- AOplata
+
+AProfile -- Stalker
+AChangeProfile -- Stalker
+AUsers -- Stalker
+AFilter -- Stalker
+AFind -- Stalker
+AOpenProfile -- Stalker
+AAddContact -- Stalker
+AChat -- Stalker
+AArts -- Stalker
+AOplata -- Stalker
+
+AProfile -- Informer
+AChangeProfile -- Informer
+AUsers -- Informer
+AFilter -- Informer
+AFind -- Informer
+AOpenProfile -- Informer
+AAddContact -- Informer
+AChat -- Informer
+AArts -- Informer
+AOplata -- Informer
+
+AProfile -- Oruzhie
+AChangeProfile -- Oruzhie
+AUsers -- Oruzhie
+AFilter -- Oruzhie
+AFind -- Oruzhie
+AOpenProfile -- Oruzhie
+AAddContact -- Oruzhie
+AChat -- Oruzhie
+AArts -- Oruzhie
+AOplata -- Oruzhie
+
+Curier -- AProfile
+Curier -- AChangeProfile
+Curier -- AUsers
+Curier -- AFilter
+Curier -- AFind
+Curier -- AOpenProfile
+Curier -- AAddContact
+Curier -- AChat
+Curier -- AArts
+Curier -- AOplata
+@enduml
