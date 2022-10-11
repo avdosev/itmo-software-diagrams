@@ -1,0 +1,32 @@
+@startuml
+actor Клиент as Client
+actor Барыга as Sidor
+
+package "Артефактик" {
+    usecase "Выставить заказ" as Order
+    usecase "Заполнить информацию" as Info
+    usecase "Опубликовать" as Pub
+
+    usecase "Создать заказ по шаблону" as TemaplateOrder
+    usecase "Выбрать шаблон артефакта" as Temaplate
+
+    Order ..> Info : "Включает"
+    Order ..> Pub : "Включает"
+    
+    TemaplateOrder ..> Temaplate : "Включает"
+    TemaplateOrder .> Info : "Включает"
+    TemaplateOrder ..> Pub : "Включает" 
+
+    usecase "Принять заказ" as AcceptOrder
+    usecase "Уведомление" as Notice
+    usecase "Получить уведомление о новом заказе" as NoticeOrder
+
+    Pub ..> Notice : "Создает"
+    NoticeOrder <... Notice : "Информирует"
+}
+
+Client -- Order
+Client -- TemaplateOrder
+Sidor -- AcceptOrder
+Sidor -- NoticeOrder
+@enduml

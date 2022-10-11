@@ -1,0 +1,21 @@
+@startuml
+actor Барыга as Client
+
+package Артефактик {
+    usecase "Принять заказ" as Order
+    usecase "Открыть список непринятых заказов" as List
+    
+    usecase "Найти сталкера" as Stalker
+    usecase "Отправить курьеру" as Courier
+
+    Order .> List : "Включает"
+
+    Courier .> Stalker : "Выполнить"
+    Courier .> Order : "Выполнить"
+}
+
+Client --> Order
+Client --> List
+
+Client --> Courier
+@enduml

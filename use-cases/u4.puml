@@ -1,0 +1,28 @@
+@startuml
+actor Барыга as Sidor
+actor Сталкер as Stalker
+
+package Артефактик {
+    usecase "Предложить заказ" as Order
+    usecase "Открыть список сталкеров" as SList
+    usecase "Выбрать сталкера" as SChoose
+    usecase "Выбрать заказ" as AChoose
+    usecase "Открыть список активных заказов" as AList
+
+    usecase "Принять заказ" as Accept
+    usecase "Отказаться от заказа" as Reject
+
+    Order .> SChoose : "Выполнить" 
+    Order .> AChoose : "Выполнить"
+
+    AChoose .> AList : "Включает"
+    SChoose .> SList : "Включает"
+}
+
+Sidor --> Order
+Sidor --> AList
+Sidor --> SList
+
+Stalker --> Accept
+Stalker --> Reject
+@enduml

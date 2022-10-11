@@ -1,0 +1,21 @@
+@startuml
+actor Сталкер as Stalker
+
+package Артефактик {
+    usecase "Открыть список с информацией" as List
+    usecase "Выбрать нужный заказ" as Choose
+    usecase "Купить информацию" as Buy
+    
+    usecase "Выставить заказ на информацию" as Order
+    usecase "Заполнить информацию об заказе" as Info 
+
+
+    Order .> Info : "Включает"
+    Choose .> List : "Включает"
+    Buy .> Choose : "Включает"
+}
+
+Stalker --> Buy
+Stalker --> List
+Stalker --> Order
+@enduml
