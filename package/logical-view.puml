@@ -1,0 +1,23 @@
+@startuml
+
+package "Авторизация" {
+    package "Регистрация"
+
+    package "Аутентификация"
+}
+
+package "Управление" {
+    package "Заказ" {
+        package "Создание заказа"
+
+        package "Управление заказом"
+    }
+
+    
+    package "Уведомления"
+    
+}
+
+package "Уведомления"
+
+@enduml
