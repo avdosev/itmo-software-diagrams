@@ -1,23 +1,23 @@
-@startuml
+@startuml logical-view
 
-package "Авторизация" {
+package auth as "Авторизация" {
     package "Регистрация"
 
     package "Аутентификация"
 }
 
-package "Управление" {
+package main as "Меню" {
     package "Заказ" {
         package "Создание заказа"
 
         package "Управление заказом"
     }
 
-    
-    package "Уведомления"
-    
+    package notice as "Уведомления" {
+
+    }
 }
 
-package "Уведомления"
+auth ..> main
 
 @enduml
