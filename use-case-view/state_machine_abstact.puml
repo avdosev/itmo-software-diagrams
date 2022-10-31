@@ -1,0 +1,27 @@
+@startuml
+
+
+state "Новый заказ" as NewOrder
+state "Принят барыгой" as AcceptedByHuckster
+state "Предложен сталкеру" as SuggestedToStalker
+state "Принят сталкером" as AcceptedByStalker
+state "В процессе" as InProgress
+state "Передан барыге" as TransferredToHuckster
+state "Отправлен клиенту" as Sent
+state "Завершен" as Completed
+state "Отклонен барыгой" as Canceled
+[*] --> NewOrder
+NewOrder--> AcceptedByHuckster
+AcceptedByHuckster --> SuggestedToStalker
+SuggestedToStalker --> AcceptedByStalker
+SuggestedToStalker --> AcceptedByHuckster
+AcceptedByHuckster --> Canceled
+Canceled -> NewOrder
+AcceptedByStalker --> InProgress
+InProgress --> TransferredToHuckster
+InProgress --> AcceptedByHuckster
+TransferredToHuckster --> Sent
+Sent --> Completed
+Completed --> [*]
+Canceled --> [*]
+@enduml

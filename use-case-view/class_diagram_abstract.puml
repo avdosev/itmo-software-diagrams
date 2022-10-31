@@ -1,0 +1,18 @@
+@startuml
+package "Controllers" 
+package "Models"
+package "Repository"
+package "Requests"
+package "Responses"
+package "Util"
+package "Security"
+
+"Controllers" ..> "Requests"
+"Controllers" ..> "Responses"
+"Repository" ..> "Controllers"
+"Models" ..> "Controllers"
+"Models" ..> "Repository"
+"Util" ..> "Controllers"
+"Security" ..> "Repository"
+
+@enduml
