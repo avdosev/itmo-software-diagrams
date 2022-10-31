@@ -10,17 +10,17 @@ state "Передан барыге" as TransferredToHuckster
 state "Отправлен клиенту" as Sent
 state "Завершен" as Completed
 state "Отклонен барыгой" as Canceled
-[*] --> NewOrder
-NewOrder--> AcceptedByHuckster
+[*] -right-> NewOrder
+NewOrder-right-> AcceptedByHuckster
 AcceptedByHuckster --> SuggestedToStalker
 SuggestedToStalker --> AcceptedByStalker
 SuggestedToStalker --> AcceptedByHuckster
 AcceptedByHuckster --> Canceled
 Canceled -> NewOrder
 AcceptedByStalker --> InProgress
-InProgress --> TransferredToHuckster
+InProgress -right-> TransferredToHuckster
 InProgress --> AcceptedByHuckster
-TransferredToHuckster --> Sent
+TransferredToHuckster -right-> Sent
 Sent --> Completed
 Completed --> [*]
 Canceled --> [*]
