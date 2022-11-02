@@ -82,13 +82,23 @@ package Models {
     class Notification
     
     class Order
-    
+
     
     class OrderStatus
     
     class User
 
+    Order o--> User
+    Order o--> OrderStatus
+    Order o--> Artifact
+   
+    Information o--> User
+    
+    Notification o--> User
+    Notification o--> Order
+
 }
+
 
 package Requests {
     class CreateInformationOrder
