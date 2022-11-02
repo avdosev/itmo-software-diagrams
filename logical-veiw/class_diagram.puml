@@ -1,0 +1,138 @@
+@startuml
+
+
+package Controllers {
+    class ArtifactController
+    Repository.ArtifactRepository <--* ArtifactController
+    Responses.ArtifactResponse <.. ArtifactController
+
+    class AuthController
+    Repository.UserRepository <--* AuthController
+    Security.JwtGenerator <.. AuthController
+    Security.PasswordEncoder <.. AuthController
+    Requests.LoginRequest <.. AuthController
+    Requests.RegisterRequest <..AuthController
+    Responses.AuthResponse <.. AuthController
+
+    class InformationController 
+    Repository.InformationRepository <--* InformationController
+    Repository.UserRepository <--* InformationController
+    Responses.InformationResponse <.. InformationController
+    Requests.CreateInformationOrder <.. InformationController
+
+
+    class NotificationController
+    Repository.NotificationRepository <--* NotificationController
+    Responses.NotificationResponse <.. NotificationController
+    
+    class OrdersController
+    Repository.OrderRepository <--* OrdersController
+    Repository.UserRepository <--* OrdersController
+    Repository.NotificationRepository <--* OrdersController
+    Util.Consts <.. OrdersController    
+    Responses.OrderResponse <.. OrdersController
+    Requests.SuggestOrderRequest <.. OrdersController
+    Requests.CreateOrderRequest <.. OrdersController
+
+    class RoleController
+    Util.Consts <.. RoleController
+
+    class UserController
+    Repository.UserRepository <--* UserController
+    Util.FilenameGenerator <.. UserController
+    Util.Consts <.. UserController
+    Responses.UserResponse <.. UserController
+    Requests.UploadUserImage <.. UserController
+   
+}
+
+package Repository {
+    interface ArtifactRepository
+    Models.Artifact <.. ArtifactRepository
+
+    interface InformationRepository
+    Models.Information <.. InformationRepository
+
+    interface NotificationRepository
+    Models.Notification <.. NotificationRepository
+
+    interface OrderRepository
+    Models.Order <.. OrderRepository
+
+    interface UserRepository
+    Models.User <.. UserRepository
+}
+
+
+
+package Security {
+
+    class SecurityConfig
+
+    class UserDetailService
+    Repository.UserRepository <--* UserDetailService
+
+    class JwtGenerator
+    interface PasswordEncoder
+
+}
+
+
+package Models {
+    class Artifact
+    
+    class Information
+    
+    class Notification
+    
+    class Order
+    
+    class OrderStatus
+    
+    class User
+
+}
+
+package Requests {
+    class CreateInformationOrder
+
+    class CreateOrderRequest
+
+    class LoginRequest
+
+    class RegisterRequest
+
+    class SuggestOrderRequest
+
+    class UploadUserImage
+
+}
+
+package Responses {
+    class AuthResponse
+
+    class InformationResponse
+
+    class NotificationResponse
+
+    class OrderResponse
+
+    class UserResponse
+
+    class ArtifactResponse
+
+}
+
+package Util {
+    class FilenameGenerator
+
+    class Consts
+
+}
+
+
+
+
+@enduml
+
+
