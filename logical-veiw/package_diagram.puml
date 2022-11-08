@@ -1,0 +1,87 @@
+@startuml logical-view
+
+package mobile as "Мобильное приложение" {
+    package auth as "Авторизация" {
+        package "Регистрация"
+
+        package "Аутентификация"
+    }
+
+    package main as "Меню" {
+        package "Заказ" {
+            package "Создание заказа"
+
+            package "Управление заказом"
+        }
+
+        package notice as "Уведомления" {
+
+        }
+    }
+
+}
+
+package backend as "Бекенд" {
+    package consts {
+        package OrderStatusIds
+        package Role
+    }
+    package controller {
+        package ArtifactController  
+        package InformationController   
+        package RoleController
+        package AuthController
+        package NotificationController  
+        package UserController
+        package ImagesConfig
+        package OrdersController
+    }
+    package model {
+        package Artifact
+        package Information
+        package Notification
+        package Order
+        package OrderStatus
+        package User
+    }
+    package repository {
+        package ArtifactRepository
+        package InformationRepository
+        package NotificationRepository
+        package OrderRepository
+        package OrderStatusRepository
+        package results {
+            package IOrderResult
+        }
+        package UserRepository
+
+    }
+    package request {
+        package CreateInformationOrder
+        package CreateOrderRequest
+        package LoginRequest
+        package RegisterRequest
+        package SuggestOrderRequest
+    }
+    package response {
+        package AuthResponse
+        package InformationResponse
+        package NotificationResponse
+        package OrderResponse
+        package UserResponse
+    }
+    package security {
+        package JwtFilter
+        package JwtUserDetailService
+        package JwtUtil
+        package SecurityConfig
+    }
+    package util {
+
+    }
+}
+
+
+auth ..> main
+
+@enduml
