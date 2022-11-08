@@ -1,18 +1,45 @@
 @startuml
-package "Controllers" 
-package "Models"
-package "Repository"
-package "Requests"
-package "Responses"
-package "Util"
-package "Security"
 
-"Controllers" ..> "Requests"
-"Controllers" ..> "Responses"
-"Repository" ..> "Controllers"
-"Models" ..> "Controllers"
-"Models" ..> "Repository"
-"Util" ..> "Controllers"
-"Security" ..> "Repository"
+class Пользователь
+class Барыга
+class Клиент
+class Заказ
+class Сталкер
+
+Клиент *-- Заказ
+Барыга o-- Сталкер
+
+Сталкер o-- Заказ
+Барыга o-- Заказ
+
+Клиент <|-up- Пользователь
+Барыга <|-up- Пользователь
+Сталкер <|-up- Пользователь 
 
 @enduml
+
+
+
+
+
+
+
+
+//@startuml
+//package "Controllers" 
+//package "Models"
+//package "Repository"
+//package "Requests"
+//package "Responses"
+//package "Util"
+//package "Security"
+//
+//"Controllers" ..> "Requests"
+//"Controllers" ..> "Responses"
+//"Repository" ..> "Controllers"
+//"Models" ..> "Controllers"
+//"Models" ..> "Repository"
+//"Util" ..> "Controllers"
+//"Security" ..> "Repository"
+//
+//@enduml
