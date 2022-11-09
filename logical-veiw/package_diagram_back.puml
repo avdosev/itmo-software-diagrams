@@ -1,25 +1,5 @@
 @startuml logical-view
-
-package mobile as "Мобильное приложение" {
-    package auth as "Авторизация" {
-        package "Регистрация"
-
-        package "Аутентификация"
-    }
-
-    package main as "Меню" {
-        package "Заказ" {
-            package "Создание заказа"
-
-            package "Управление заказом"
-        }
-
-        package notice as "Уведомления" {
-
-        }
-    }
-
-}
+left to right direction
 
 package backend as "Бекенд" {
     package consts {
@@ -36,7 +16,7 @@ package backend as "Бекенд" {
         package ImagesConfig
         package OrdersController
     }
-    package model {
+    package models {
         package Artifact
         package Information
         package Notification
@@ -79,9 +59,16 @@ package backend as "Бекенд" {
     package util {
 
     }
+    
+    
 }
 
-
-auth ..> main
+consts ..> controller
+repository <.. security 
+util ..> controller
+models ..> repository
+controller <... models 
+controller ..> request
+controller ..> response
 
 @enduml

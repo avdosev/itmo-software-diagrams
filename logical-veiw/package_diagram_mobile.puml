@@ -1,0 +1,34 @@
+@startuml logical-view
+
+package mobile as "Мобильное приложение" {
+    package api {
+        package AuthService
+        package Network
+    }
+
+    package models
+    package pages {
+        package components
+        package auth as "Авторизация" {
+            package "Регистрация"
+
+            package "Аутентификация"
+        }
+    }
+
+    package stores {
+        package AppState
+    }
+
+    package utils {
+
+    }
+
+
+}
+
+models ..> api
+api ..> stores
+stores ..> pages
+
+@enduml
