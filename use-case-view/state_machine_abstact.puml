@@ -2,26 +2,16 @@
 
 
 state "Новый заказ" as NewOrder
-state "Принят барыгой" as AcceptedByHuckster
-state "Предложен сталкеру" as SuggestedToStalker
-state "Принят сталкером" as AcceptedByStalker
+state "Принят" as AcceptedByHuckster
 state "В процессе" as InProgress
-state "Передан барыге" as TransferredToHuckster
+state "Готов" as TransferredToHuckster
 state "Отправлен клиенту" as Sent
 state "Завершен" as Completed
-state "Отклонен барыгой" as Canceled
 [*] -right-> NewOrder
-NewOrder-right-> AcceptedByHuckster
-AcceptedByHuckster --> SuggestedToStalker
-SuggestedToStalker --> AcceptedByStalker
-SuggestedToStalker --> AcceptedByHuckster
-AcceptedByHuckster --> Canceled
-Canceled -> NewOrder
-AcceptedByStalker --> InProgress
-InProgress -right-> TransferredToHuckster
-InProgress --> AcceptedByHuckster
-TransferredToHuckster -right-> Sent
-Sent --> Completed
+NewOrder -right-> AcceptedByHuckster
+AcceptedByHuckster -right-> InProgress
+InProgress -down-> TransferredToHuckster
+TransferredToHuckster -left-> Sent
+Sent -left-> Completed
 Completed --> [*]
-Canceled --> [*]
 @enduml
