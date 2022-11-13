@@ -1,0 +1,48 @@
+@startuml
+
+
+node "<<Device>> \n Mobile Device" {
+
+node "<<OS>> \n Android Version >= 4.1" {
+
+artifact "<<artifact>> \n Mobile App" {
+
+portout mobile_port
+
+}
+
+}
+
+}
+
+
+node "   <<Device>> \nBackend Server" {
+
+node "<<OS>> \n FreeBSD" {
+
+database "<<Database System>> \n PostgreSQL" {
+
+artifact "<<artifact>> \n Artifact DB Scheme"
+portin db_port
+}
+
+node "<<Environment>> \n openjdk 17.0.2 \n Spring Boot 2.7.3"  {
+
+artifact "<<artifact>> \n Artifact REST API" {
+
+portin api_port
+portout api_db_port
+
+}
+
+}
+
+
+}
+
+}
+
+mobile_port -right- api_port : HTTP
+api_db_port -left- db_port : JDBC
+
+@enduml
