@@ -102,14 +102,14 @@ package Models {
         String passwordHash
     }
 
-    Order o--> User
-    Order o--> OrderStatus
-    Order o--> Artifact
+    Order "1" o--> "0..*" User
+    Order "1" o--> "0..*" OrderStatus
+    Order "1" o--> "0..*" Artifact
    
-    Information o--> User
+    Information "1" o--> "0..*" User
     
-    Notification o--> User
-    Notification o--> Order
+    Notification "1" o--> "0..*" User
+    Notification "1" o--> "0..*" Order
 
     
 
