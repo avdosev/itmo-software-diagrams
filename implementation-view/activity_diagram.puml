@@ -1,0 +1,83 @@
+@startuml
+
+
+|Клиент: Мобильное приложение|
+start
+
+:POST /api/auth/login;
+
+|:AuthenticationController|
+
+:Login();
+
+:userRepository.findByEmail();
+
+|:AuthenticationController|
+if (user == null) then (true)
+    :return ResponseEntity<AuthResponse>();
+else (false)
+    :return BadRequest();
+    end
+endif
+
+|Клиент: Мобильное приложение|
+
+:GET /api/artifacts;
+
+|:ArtifactController|
+:artifactRepository.getAll();
+:return new ResponseEntity<Iterable<Artifact>>;
+
+|Клиент: Мобильное приложение|
+:POST /api/orders;
+
+|:OrderController|
+:order = new Order();
+:orderRepository.save();
+:hucksters = userRepository.findByRole();
+:notificationRepository.createNotifications();
+
+
+|Барыга: Мобильное приложение|
+:GET /api/notifications;
+
+|:NotificationController|
+:notificationRepository.findByUserId();
+:notificationRepository.setWasRead();
+:return new ResponseEntity<Iterable<NotificationResponse>>();
+
+|Барыга: Мобильное приложение|
+:GET /api/orders/available;
+
+|:OrderController|
+:userRepository.findById();
+:orderRepository.findNewOrders();
+:return new ResponseEntity<Iterable<OrderResponse>>();
+
+|Барыга: Мобильное приложение|
+:Выбрать новый заказ;
+if (заказ устраивает) then (да)
+    :POST /api/orders/accept;
+else (нет)
+    :POST /api/orders/decline;
+endif
+
+|:OrderController|
+:orderRepository.findById();
+:orderRepository.setNewStatus();
+:notificationRepository.createUserNotification();
+
+|Клиент: Мобильное приложение|
+:GET /api/notifications;
+
+|:NotificationController|
+:notificationRepository.findByUserId();
+:notificationRepository.setWasRead();
+:return new ResponseEntity<Iterable<NotificationResponse>>();
+
+|Клиент: Мобильное приложение|
+
+stop
+@enduml
+
+

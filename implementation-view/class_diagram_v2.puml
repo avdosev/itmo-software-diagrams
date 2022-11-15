@@ -1,0 +1,261 @@
+@startuml Classes
+
+
+class OrderStatusIds {
+    long NewOrder
+    long AcceptedByHuckster
+    long AcceptedByStalker
+    long InProgress
+    long TransferredToHuckster
+    long Sent
+    long Completed
+}
+
+class ArtifactController {
+    ArtifactRepository artifactRepository
+    ResponseEntity getArtifacts()
+}
+
+ArtifactController *-- ArtifactRepository
+class AuthController {
+    UserRepository userRepository
+    ResponseEntity Register(RegisterRequest request)
+    ResponseEntity Login(LoginRequest request)
+}
+
+AuthController *-- UserRepository
+
+
+class InformationController {
+    InformationRepository infoRepository
+    UserRepository userRepository
+
+    ResponseEntity CreateInformation(CreateInformationOrder request)
+    ResponseEntity GetAvailableList()
+    ResponseEntity GetIterableResponseEntity(Iterable information, Boolean hideInfo)
+    ResponseEntity GetInformationList()
+    ResponseEntity GetInformation(Long id)
+    ResponseEntity BuyInformation(Long id)
+}
+
+InformationController *-- UserRepository
+InformationController *-- InformationRepository
+
+
+class NotificationController {
+    NotificationRepository notificationRepository
+    ResponseEntity getNotifications()
+}
+NotificationController *-- NotificationRepository
+
+class OrdersController {
+    OrderRepository orderRepository
+    UserRepository userRepository
+    NotificationRepository notificationRepository
+
+    ResponseEntity SuggestOrder(SuggestOrderRequest request)
+    ResponseEntity DeclineOrder(long id)
+    ResponseEntity AcceptOrder(long id)
+    ResponseEntity CreateOrder(CreateOrderRequest request)
+    ResponseEntity GetOrderResponse(Long id)
+    ResponseEntity GetOrderList()
+    OrderResponse GetOrder(Long id)
+    ResponseEntity GetAvailableOrders()
+}
+
+OrdersController *-- OrderRepository
+OrdersController *-- UserRepository
+OrdersController *-- NotificationRepository
+class RoleController {
+    ResponseEntity getAllRoles()
+}
+
+class UserController {
+    UserRepository userRepository
+    ResponseEntity getUserDetails()
+    ResponseEntity getAllStalkers()
+}
+
+UserController *-- UserRepository
+
+
+class Role {
+    String Stalker
+    String Client
+    String Huckster
+    String Informer
+    String WeaponDealer
+    String ALL
+    boolean isPresent(String name)
+}
+
+class Artifact {
+    Long id
+    String name
+    double price
+}
+class Information {
+    Long id
+    String title
+    String description
+    String information
+    Double price
+    Date creationDate
+    Long createdUserId
+    Long acceptedUserId
+    Long statusId
+}
+class Notification {
+    Long id
+    String message
+    boolean wasRead
+    Long userId
+    Long orderId
+}
+class Order {
+    Long id
+    Artifact artifact
+    Long artifactId
+    Double price
+    Date completionDate
+    User createdUser
+    Long createdUserId
+    User acceptedUser
+    Long acceptedUserId
+    User assignedUser
+    Long assignedUserId
+    User suggestedUser
+    Long suggestedUserId
+    OrderStatus status
+    Long statusId
+}
+Order *-- User
+Order *-- Artifact
+Order *-- OrderStatus
+
+class OrderStatus {
+    Long id
+    String name
+}
+class User {
+    Long id
+    String email
+    String firstName
+    String lastName
+    String middleName
+    String nickname
+    String role
+    String passwordHash
+}
+class ArtifactRepository {
+}
+
+ArtifactRepository o--- Artifact
+
+class InformationRepository {
+    Iterable findByStatus(long statusId)
+    Iterable findByAcceptedUser(long userId)
+    Iterable findByCreatedUser(long userId)
+    Iterable findAllNotAccepted()
+}
+
+InformationRepository o--- Information
+
+class NotificationRepository {
+    Iterable findByUserId(long userId)
+}
+
+NotificationRepository o--- Notification
+
+class OrderRepository {
+    Iterable findByCreatedUserId(long userId)
+    Iterable findByAssignedUserId(long userId)
+    Iterable findByAcceptedUserId(long userId)
+    Iterable findOrderByStatus(long statusId)
+    Iterable findSuggestedOrders(long userId)
+}
+OrderRepository o--- Order
+
+class OrderStatusRepository {
+}
+OrderStatusRepository o--- OrderStatus
+
+class UserRepository {
+    Optional findByEmail(String email)
+    Iterable findByRole(String role)
+}
+
+UserRepository o--- User
+
+
+class CreateInformationOrder {
+    String title
+    String description
+    String information
+    Double price
+}
+class CreateOrderRequest {
+    Long artifactId
+    Double price
+    Date completionDate
+}
+class LoginRequest {
+    String email
+    String password
+}
+class RegisterRequest {
+    String email
+    String password
+    String role
+}
+class SuggestOrderRequest {
+    long orderId
+    long stalkerId
+}
+class AuthResponse {
+    String token
+    User user
+}
+
+AuthResponse *-- User
+
+class InformationResponse {
+    Long id
+    String title
+    String description
+    String information
+    Double price
+    Date creationDate
+    User createdUser
+    User acceptedUser
+}
+InformationResponse *-- User
+
+class NotificationResponse {
+    boolean wasRead
+    String text
+    long orderId
+}
+
+class OrderResponse {
+    Order order
+    User createdUser
+    User acceptedUser
+    User assignedUser
+    OrderStatus orderStatus
+    Artifact artifact
+}
+
+OrderResponse *-- Artifact
+OrderResponse *-- User
+OrderResponse *-- Order
+OrderResponse *-- OrderStatus
+
+class UserResponse {
+    User user
+}
+
+UserResponse *-- User
+
+
+@enduml
