@@ -1,0 +1,90 @@
+@startuml
+state "Новый заказ" as NewOrder
+state "Принят барыгой" as AcceptedByHuckster 
+state "Принят сталкером" as AcceptedByStalker
+state "В процессе" as InProgress
+state "Передан барыге" as TransferredToHuckster
+state "Отправлен клиенту" as Sent
+state "Завершен" as Completed
+state "Отклонен барыгой" as Canceled
+
+NewOrder: statusId = **OrderStatusIds.NewOrder**
+NewOrder: acceptedUserId = null
+NewOrder: assignedUser = null
+NewOrder: suggestedUserId = null
+
+[*] -right-> NewOrder: new Order()
+
+NewOrder-right-> AcceptedByHuckster: setAcceptedUserId()
+
+state "Принят барыгой" as AcceptedByHuckster {
+    
+    state SuggestedToStalker2 as "Предложен сталкеру"
+    state AcceptedByHuckster2 as "Принят барыгой"
+
+
+    AcceptedByHuckster2 : statusId = **OrderStatusIds.AcceptedByHuckster**
+    AcceptedByHuckster2 : acceptedUserId = **hucksterId**
+    AcceptedByHuckster2 : assignedUser = **null**
+    AcceptedByHuckster2 : suggestedUserId = **null**
+
+
+    [*] --> AcceptedByHuckster2 
+    AcceptedByHuckster2 --> SuggestedToStalker2 : setSuggestedUserId()
+    SuggestedToStalker2 -up-> AcceptedByHuckster2 : setSuggestedUserId(null)
+
+    SuggestedToStalker2 : statusId = OrderStatusIds.AcceptedByHuckster
+    SuggestedToStalker2 : acceptedUserId = hucksterId
+    SuggestedToStalker2 : assignedUser = null
+    SuggestedToStalker2 : suggestedUserId = **stalkerId**
+}
+
+
+AcceptedByHuckster --> AcceptedByStalker: setAssignedUserId()
+AcceptedByHuckster --> Canceled: setStatusId(OrderStatusIds.Cancelled)
+
+Canceled: statusId = **OrderStatusIds.Canceled**
+Canceled: acceptedUserId = hucksterId
+Canceled: assignedUser = null
+Canceled: suggestedUserId = null
+
+
+AcceptedByStalker: statusId = **OrderStatusIds.AcceptedByStalker**
+AcceptedByStalker: acceptedUserId = hucksterId
+AcceptedByStalker: assignedUser = **stalkerId**
+AcceptedByStalker: suggestedUserId = stalkerId
+
+AcceptedByStalker --> InProgress: setStatusId(OrderStatusIds.InProgress)
+
+InProgress: statusId = **OrderStatusIds.InProgress**
+InProgress: acceptedUserId = hucksterId
+InProgress: assignedUser = stalkerId
+InProgress: suggestedUserId = stalkerId
+
+InProgress -right-> TransferredToHuckster: setStatusId(OrderStatusIds.TransferredToHuckster)
+
+TransferredToHuckster: statusId = **OrderStatusIds.TransferredToHuckster**
+TransferredToHuckster: acceptedUserId = hucksterId
+TransferredToHuckster: assignedUser = stalkerId
+TransferredToHuckster: suggestedUserId = stalkerId
+
+InProgress --> AcceptedByHuckster: setStatusId(OrderStatusIds.AcceptedByHuckster) \n setAssignedUserId(null) \n setSuggestedUserId(null)
+
+TransferredToHuckster -right-> Sent : setStatusId(OrderStatusIds.Sent)
+
+Sent : statusId = **OrderStatusIds.Sent**
+Sent : acceptedUserId = hucksterId
+Sent : assignedUser = stalkerId
+Sent : suggestedUserId = stalkerId
+
+
+Sent --> Completed: setStatusId(OrderStatusId.Completed)
+
+Completed: statusId = **OrderStatusIds.Completed**
+Completed : acceptedUserId = hucksterId
+Completed: assignedUser = stalkerId
+Completed: suggestedUserId = stalkerId
+
+Completed --> [*]
+Canceled --> [*]
+@enduml
