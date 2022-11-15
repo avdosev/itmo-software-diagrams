@@ -1,0 +1,108 @@
+
+@startuml
+
+
+participant Барыга[
+    Барыга
+    ----
+    ""Мобильное приложение""
+]
+
+participant Сталкер[
+    Сталкер
+    ----
+    ""Мобильное приложение""
+]
+
+
+activate Барыга
+Барыга -> ":OrdersController": GET /api/orders/accepted
+
+activate ":OrdersController"
+":OrdersController" -> "repository:OrderRepository": findByAcceptedUserId()
+activate "repository:OrderRepository"
+
+return Iterable<Order>
+return Iterable<OrderResponse>
+
+Барыга -> ":UserController": GET /api/users/stalkers
+activate ":UserController"
+":UserController" -> "repository:UsersRepository": findByRole()
+activate "repository:UsersRepository"
+
+return Iterable<User>
+
+return Iterable<UserResponse>
+
+
+
+Барыга -> ":OrdersController": POST /api/orders/suggest
+activate ":OrdersController"
+":OrdersController" -> "repository:OrderRepository" : setSuggestedUserId()
+activate "repository:OrderRepository"
+return
+
+":OrdersController" -> "notifications:NotificationRepository": save()
+activate "notifications:NotificationRepository"
+return
+
+return OrderResponse
+deactivate Барыга
+
+
+activate Сталкер
+Сталкер -> ":NotificationController" : GET /api/notifications
+activate ":NotificationController"
+
+":NotificationController" -> "notifications:NotificationRepository": findByUserId()
+activate "notifications:NotificationRepository"
+return Iterable<Notification>
+
+":NotificationController" -> "notifications:NotificationRepository": setWasRead()
+activate "notifications:NotificationRepository"
+return
+
+return Iterable<NotificationResponse>
+
+Сталкер -> ":OrdersController": GET /api/orders/{id}
+activate ":OrdersController"
+
+":OrdersController" -> "repository:OrderRepository": findById()
+activate "repository:OrderRepository"
+return Order
+
+return OrderResponse
+
+
+alt Заказ устраивает сталкера
+    Сталкер -> ":OrdersController": POST /api/orders/accept/{id}
+    activate ":OrdersController"
+
+    ":OrdersController" -> "repository:OrderRepository" : setAcceptedUserId()
+    activate "repository:OrderRepository"
+    return Order
+
+    ":OrdersController" -> "notifications:NotificationRepository": save()
+    activate "notifications:NotificationRepository"
+    return
+
+    return OrderResponse
+    
+else Заказ не устраивает
+    Сталкер -> ":OrdersController": /api/orders/decline/{id}
+    activate ":OrdersController"
+
+    ":OrdersController" -> "repository:OrderRepository" : setSuggestedUserId()
+    activate "repository:OrderRepository"
+    return Order
+    
+    ":OrdersController" -> "notifications:NotificationRepository": save()
+    activate "notifications:NotificationRepository"
+    return
+
+    return OrderResponse
+
+end
+deactivate Сталкер
+
+@enduml
