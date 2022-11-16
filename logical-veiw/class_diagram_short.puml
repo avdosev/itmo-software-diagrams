@@ -76,6 +76,15 @@ package Models {
     
     class User
 
+    Order o--> User
+    Order o--> OrderStatus
+    Order o--> Artifact
+   
+    Information o--> User
+    
+    Notification o--> User
+    Notification o--> Order
+
     
 
 }

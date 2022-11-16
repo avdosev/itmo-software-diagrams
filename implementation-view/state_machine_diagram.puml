@@ -12,6 +12,7 @@ NewOrder: statusId = **OrderStatusIds.NewOrder**
 NewOrder: acceptedUserId = null
 NewOrder: assignedUser = null
 NewOrder: suggestedUserId = null
+NewOrder: courierUserId = null
 
 [*] -right-> NewOrder: new Order()
 
@@ -27,6 +28,7 @@ state "Принят барыгой" as AcceptedByHuckster {
     AcceptedByHuckster2 : acceptedUserId = **hucksterId**
     AcceptedByHuckster2 : assignedUser = **null**
     AcceptedByHuckster2 : suggestedUserId = **null**
+    AcceptedByHuckster2: courierUserId = null
 
 
     [*] --> AcceptedByHuckster2 
@@ -37,6 +39,8 @@ state "Принят барыгой" as AcceptedByHuckster {
     SuggestedToStalker2 : acceptedUserId = hucksterId
     SuggestedToStalker2 : assignedUser = null
     SuggestedToStalker2 : suggestedUserId = **stalkerId**
+    SuggestedToStalker2: courierUserId = null
+
 }
 
 
@@ -47,12 +51,14 @@ Canceled: statusId = **OrderStatusIds.Canceled**
 Canceled: acceptedUserId = hucksterId
 Canceled: assignedUser = null
 Canceled: suggestedUserId = null
+Canceled: courierUserId = null
 
 
 AcceptedByStalker: statusId = **OrderStatusIds.AcceptedByStalker**
 AcceptedByStalker: acceptedUserId = hucksterId
 AcceptedByStalker: assignedUser = **stalkerId**
 AcceptedByStalker: suggestedUserId = stalkerId
+AcceptedByStalker: courierUserId = null
 
 AcceptedByStalker --> InProgress: setStatusId(OrderStatusIds.InProgress)
 
@@ -60,6 +66,7 @@ InProgress: statusId = **OrderStatusIds.InProgress**
 InProgress: acceptedUserId = hucksterId
 InProgress: assignedUser = stalkerId
 InProgress: suggestedUserId = stalkerId
+InProgress: courierUserId = null
 
 InProgress -right-> TransferredToHuckster: setStatusId(OrderStatusIds.TransferredToHuckster)
 
@@ -67,6 +74,7 @@ TransferredToHuckster: statusId = **OrderStatusIds.TransferredToHuckster**
 TransferredToHuckster: acceptedUserId = hucksterId
 TransferredToHuckster: assignedUser = stalkerId
 TransferredToHuckster: suggestedUserId = stalkerId
+TransferredToHuckster: courierUserId = null
 
 InProgress --> AcceptedByHuckster: setStatusId(OrderStatusIds.AcceptedByHuckster) \n setAssignedUserId(null) \n setSuggestedUserId(null)
 
@@ -76,6 +84,7 @@ Sent : statusId = **OrderStatusIds.Sent**
 Sent : acceptedUserId = hucksterId
 Sent : assignedUser = stalkerId
 Sent : suggestedUserId = stalkerId
+Sent : courierUserId = **courierId**
 
 
 Sent --> Completed: setStatusId(OrderStatusId.Completed)
@@ -84,6 +93,7 @@ Completed: statusId = **OrderStatusIds.Completed**
 Completed : acceptedUserId = hucksterId
 Completed: assignedUser = stalkerId
 Completed: suggestedUserId = stalkerId
+Completed : courierUserId = courierId
 
 Completed --> [*]
 Canceled --> [*]
