@@ -17,19 +17,22 @@ User<|-- Courier
 
 package Артефактик {
 
-    usecase "Изменить информацию в личном профиле" as UpdateProfile
+    usecase "Регистрация" as Register
+    
+    usecase "Выбор роли" as SelectRole
 
-    usecase "Ввести новую информацию" as InputData
+    usecase "Ввод почты и пароля" as InputData
 
-    usecase "Открыть личный профиль" as OpenProfile
+    usecase "Просмотр списка ролей" as OpenRoles
 
+    Register .-down-> InputData: Includes
+    Register.> SelectRole: Includes
+    SelectRole.> OpenRoles: Includes
 
-    UpdateProfile .> OpenProfile: Includes
-    UpdateProfile .-down-> InputData: Includes
 }
 
-User --> UpdateProfile
-User --> OpenProfile
+User --> Register
+
 
 
 @enduml

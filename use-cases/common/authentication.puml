@@ -17,19 +17,14 @@ User<|-- Courier
 
 package Артефактик {
 
-    usecase "Изменить информацию в личном профиле" as UpdateProfile
+    usecase "Авторизация" as Authorize
+    
+    usecase "Ввод почты и пароля" as InputData
 
-    usecase "Ввести новую информацию" as InputData
+    Authorize.> InputData: Includes
 
-    usecase "Открыть личный профиль" as OpenProfile
-
-
-    UpdateProfile .> OpenProfile: Includes
-    UpdateProfile .-down-> InputData: Includes
 }
 
-User --> UpdateProfile
-User --> OpenProfile
-
+User --> Authorize
 
 @enduml
