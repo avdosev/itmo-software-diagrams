@@ -12,16 +12,38 @@ state "Завершен" as Completed
 state "Отклонен барыгой" as Canceled
 [*] -right-> NewOrder
 NewOrder-right-> AcceptedByHuckster
+NewOrder: ИдСостояния: State.New
+
+AcceptedByHuckster: ИдентификаторБарыги: ID
 AcceptedByHuckster --> SuggestedToStalker
+AcceptedByHuckster: ИдСостояния: State.AcceptedByHuckster
+AcceptedByHuckster --> Canceled
+
+
+SuggestedToStalker: ИдентификаторПредложенногоСталкера: ID
 SuggestedToStalker --> AcceptedByStalker
 SuggestedToStalker --> AcceptedByHuckster
-AcceptedByHuckster --> Canceled
-Canceled -> NewOrder
+
+AcceptedByStalker: ИдентификаторСталкера: ID
+AcceptedByStalker: ИдСостояния: State.AcceptedByStalker
 AcceptedByStalker --> InProgress
+
+Canceled: ИдСостояния: State.Canceled
+Canceled -> NewOrder
+
+InProgress: ИдСостояния: State.InProgress
 InProgress -right-> TransferredToHuckster
-InProgress --> AcceptedByHuckster
+
+TransferredToHuckster: ИдСостояния: State.TransferredToHuckster
 TransferredToHuckster -right-> Sent
+
+InProgress --> AcceptedByHuckster
+
+Sent: ИдКурьера: ID
+Sent: ИдСостояния: State.Sent
 Sent --> Completed
+
+Completed: ИдСостояния: State.Completed
 Completed --> [*]
 Canceled --> [*]
 @enduml
