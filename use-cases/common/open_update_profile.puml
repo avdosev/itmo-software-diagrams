@@ -1,0 +1,39 @@
+@startuml
+actor Барыга as Sidor
+actor Сталкер as Stalker
+actor Клиент as Client
+actor Информатор as Informator
+actor "Торговец оружием" as GunSeller
+actor Курьер as Courier
+actor Пользователь as User
+
+User<|-- Sidor
+User<|-- Stalker
+User<|-- Client
+User<|-- Informator
+User<|-- GunSeller
+User<|-- Courier
+
+
+package Артефактик {
+
+    usecase "Изменить информацию в личном профиле" as UpdateProfile
+    
+    usecase "Открыть личный профиль" as OpenProfile
+
+    usecase "Авторизация" as Login
+
+    usecase "Ввод логина и пароля" as LoginInput
+
+    UpdateProfile .> OpenProfile: Includes
+    OpenProfile .-down-> Login: Includes
+    Login .-left-> LoginInput: Includes
+
+}
+
+User --> UpdateProfile
+User --> OpenProfile
+User --> Login
+
+
+@enduml
