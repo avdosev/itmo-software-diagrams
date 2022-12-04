@@ -2,20 +2,20 @@
 actor Барыга as Client
 
 package Артефактик {
-    usecase "Принять заказ" as Order
-    usecase "Открыть список непринятых заказов" as List
+    usecase "Принять заказ" as AcceptOrder
+    usecase "Открыть список доступных заказов" as ListOrders
     
-    usecase "Найти сталкера" as Stalker
+    usecase "Предложить заказ сталкеру" as SuggestToStalker
     usecase "Отправить курьеру" as Courier
 
-    Order .> List : "Включает"
+    AcceptOrder .-down-> ListOrders: "Includes"
 
-    Courier .> Stalker : "Выполнить"
-    Courier .> Order : "Выполнить"
+    AcceptOrder .-down-> SuggestToStalker: "Includes"
+    Courier .> AcceptOrder: "Includes"
 }
 
-Client --> Order
-Client --> List
+Client --> AcceptOrder
+Client --> ListOrders
 
 Client --> Courier
 @enduml

@@ -1,0 +1,18 @@
+@startuml
+actor Клиент as Client
+
+package "Артефактик" {
+    usecase "Открыть список заказов" as ListOrders
+
+    usecase "Открыть нужный заказ" as OpenOrder
+
+    usecase "Посмотреть статус заказа" as CheckStatus
+
+    OpenOrder .-left-> ListOrders: Includes
+    CheckStatus .-left-> OpenOrder: Includes
+
+}
+
+Client --> ListOrders
+Client --> CheckStatus
+@enduml
