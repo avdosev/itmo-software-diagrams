@@ -6,7 +6,7 @@ package Артефактик {
     usecase "Открыть список доступных заказов" as ListOrders
     
     usecase "Предложить заказ сталкеру" as SuggestToStalker
-    usecase "Отправить курьеру" as Courier
+    usecase "Передать заказ курьеру" as Courier
 
     AcceptOrder .-down-> ListOrders: "Includes"
 
