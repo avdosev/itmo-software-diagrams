@@ -1,0 +1,45 @@
+@startuml
+actor "Торговец оружием" as GunSeller
+actor Сталкер as Stalker
+
+package Артефактик {
+
+    usecase "Выставить оружие на продажу" as CreateGunProduct
+    usecase "Заполнить информацию об оружии" as FillGunInfo
+
+    usecase "Посмотреть список доступного оружия" as GetGunList
+    
+    usecase "Выбрать нужное оружие" as SelectGun
+
+    usecase "Сделать заказ на оружие" as CreateGunOrder
+
+    usecase "Получить уведомление о новом заказе" as OrderNotification
+
+    usecase "Принять заказ на оружие" as AcceptGunOrder
+
+    usecase "Отклонить заказ на оружие" as DeclineGunOrder
+
+    usecase "Посмотреть информацию о новом заказе" as GetOrderInfo
+
+    CreateGunProduct.> FillGunInfo : Includes
+
+    CreateGunOrder .> SelectGun: Includes
+    SelectGun .> GetGunList: Includes
+
+    GetOrderInfo .-up-> OrderNotification: Includes
+
+    AcceptGunOrder .-down-> GetOrderInfo: Includes
+    DeclineGunOrder .-down-> GetOrderInfo: Includes
+    
+ 
+}
+
+
+GunSeller --> CreateGunProduct
+GunSeller --> OrderNotification
+GunSeller --> AcceptGunOrder 
+GunSeller --> DeclineGunOrder 
+Stalker --> CreateGunOrder
+Stalker --> GetGunList
+
+@enduml

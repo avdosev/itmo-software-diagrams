@@ -1,0 +1,32 @@
+@startuml
+actor "Торговец оружием" as GunSeller
+
+package Артефактик {
+
+    usecase "Выставить оружие на продажу" as CreateGunProduct
+    usecase "Заполнить информацию об оружии" as FillGunInfo
+
+    usecase "Изменить предложение" as EditGunProduct
+
+    usecase "Снять оружие с продажи" as CancelGunProduct
+
+    usecase "Открыть список текущих предложений" as GetProductList
+
+    usecase "Выбрать предложение оружия" as SelectProduct
+
+    CreateGunProduct .-down-> FillGunInfo: Includes
+    EditGunProduct .-down-> FillGunInfo: Includes
+
+    CancelGunProduct .-down-> SelectProduct: Includes
+    EditGunProduct .-down-> SelectProduct: Includes
+    SelectProduct .-up-> GetProductList: Includes
+   
+ 
+}
+
+
+GunSeller --> CreateGunProduct
+GunSeller --> GetProductList
+GunSeller --> EditGunProduct 
+GunSeller --> CancelGunProduct 
+@enduml
