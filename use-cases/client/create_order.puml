@@ -3,30 +3,36 @@ actor Клиент as Client
 actor Барыга as Sidor
 
 package "Артефактик" {
-    usecase "Выставить заказ" as Order
-    usecase "Заполнить информацию" as Info
-    usecase "Опубликовать" as Pub
+    usecase "Выставить заказ" as CreateOrder
+    usecase "Заполнить информацию" as FillOrderInfo
+    usecase "Опубликовать" as PublishOrder
 
-    usecase "Создать заказ по шаблону" as TemaplateOrder
-    usecase "Выбрать шаблон артефакта" as Temaplate
+    usecase "Создать заказ по шаблону" as CreateOrderByTemplate
+    usecase "Выбрать шаблон артефакта" as SelectOrderTemplate
 
-    Order ..> Info : "Включает"
-    Order ..> Pub : "Включает"
+    CreateOrder ..> FillOrderInfo : "Включает"
+    CreateOrder ..> PublishOrder : "Включает"
     
-    TemaplateOrder ..> Temaplate : "Включает"
-    TemaplateOrder .> Info : "Включает"
-    TemaplateOrder ..> Pub : "Включает" 
+    CreateOrderByTemplate ..> SelectOrderTemplate : "Includes"
+    CreateOrderByTemplate .> FillOrderInfo : "Includes"
+    CreateOrderByTemplate ..> PublishOrder : "Includes" 
 
     usecase "Принять заказ" as AcceptOrder
-    usecase "Уведомление" as Notice
-    usecase "Получить уведомление о новом заказе" as NoticeOrder
+    usecase "Отправить уведомление" as SendNotification
+    usecase "Получить уведомление о новом заказе" as ReceiveNotification
 
-    Pub ..> Notice : "Создает"
-    NoticeOrder <... Notice : "Информирует"
+    usecase "Открыть список доступных заказов" as GetOrderList
+
+    PublishOrder ..> SendNotification : "Includes"
+    ReceiveNotification <... SendNotification : "Includes"
+
+    GetOrderList .> ReceiveNotification: "Includes"
+    AcceptOrder .> GetOrderList : "Includes"
 }
 
-Client -- Order
-Client -- TemaplateOrder
-Sidor -- AcceptOrder
-Sidor -- NoticeOrder
+Client --> CreateOrder
+Client --> CreateOrderByTemplate
+Sidor --> AcceptOrder
+Sidor --> ReceiveNotification
+Sidor --> GetOrderList 
 @enduml

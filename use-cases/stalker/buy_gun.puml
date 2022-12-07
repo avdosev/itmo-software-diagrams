@@ -4,8 +4,6 @@ actor Сталкер as Stalker
 
 package Артефактик {
 
-    usecase "Выставить оружие на продажу" as CreateGunProduct
-    usecase "Заполнить информацию об оружии" as FillGunInfo
 
     usecase "Посмотреть список доступного оружия" as GetGunList
     
@@ -21,12 +19,14 @@ package Артефактик {
 
     usecase "Посмотреть информацию о новом заказе" as GetOrderInfo
 
-    CreateGunProduct.> FillGunInfo : Includes
+    usecase "Открыть список предлагаемых заказов" as GetOrderList
+
 
     CreateGunOrder .> SelectGun: Includes
     SelectGun .> GetGunList: Includes
 
-    GetOrderInfo .-up-> OrderNotification: Includes
+    GetOrderInfo .-up-> GetOrderList: Includes
+    GetOrderList .> OrderNotification : Includes
 
     AcceptGunOrder .-down-> GetOrderInfo: Includes
     DeclineGunOrder .-down-> GetOrderInfo: Includes
@@ -35,10 +35,10 @@ package Артефактик {
 }
 
 
-GunSeller --> CreateGunProduct
 GunSeller --> OrderNotification
 GunSeller --> AcceptGunOrder 
 GunSeller --> DeclineGunOrder 
+GunSeller --> GetOrderList
 Stalker --> CreateGunOrder
 Stalker --> GetGunList
 
