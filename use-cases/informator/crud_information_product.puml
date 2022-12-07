@@ -1,0 +1,32 @@
+@startuml
+actor "Информатор" as Informator
+
+package Артефактик {
+
+    usecase "Выставить информацию об артефакте на продажу" as CreateInfoProduct
+    usecase "Заполнить данные для продажи" as FillInfo
+
+    usecase "Изменить предложение" as EditInfoProduct
+
+    usecase "Снять информацию об артефакте с продажи" as CancelInfoProduct
+
+    usecase "Открыть список текущих предложений" as GetProductList
+
+    usecase "Выбрать нужную информацию" as SelectProduct
+
+    CreateInfoProduct .-down-> FillInfo: Includes
+    EditInfoProduct .-down-> FillInfo: Includes
+
+    CancelInfoProduct .-down-> SelectProduct: Includes
+    EditInfoProduct .-down-> SelectProduct: Includes
+    SelectProduct .-up-> GetProductList: Includes
+   
+ 
+}
+
+
+Informator --> CreateInfoProduct
+Informator --> GetProductList
+Informator --> EditInfoProduct 
+Informator --> CancelInfoProduct 
+@enduml
