@@ -1,0 +1,37 @@
+@startuml
+actor Сталкер as Stalker
+actor Клиент as Client
+actor Курьер as Courier
+
+actor Получатель as Receiver
+
+Receiver <|-- Stalker
+Receiver <|-- Client
+
+package Артефактик {
+    usecase "Посмотреть список предлагаемых заказов" as GetSuggestedOrders
+
+    usecase "Принять заказ доставки" as AcceptOrder
+
+    usecase "Отказаться от заказа" as DeclineOrder
+
+    usecase "Доставить заказ адресату" as DeliverOrder
+
+    usecase "Получить заказ от курьера" as ReceiveOrder
+
+    usecase "Подтвердить доставку" as ConfirmDelivery
+
+    ConfirmDelivery .> ReceiveOrder: Includes
+
+    AcceptOrder .-down-> GetSuggestedOrders: Includes
+    DeclineOrder .> GetSuggestedOrders: Includes
+    DeliverOrder .> AcceptOrder: Includes
+}
+
+Receiver--> ReceiveOrder
+Receiver--> ConfirmDelivery
+
+Courier--> GetSuggestedOrders
+Courier--> DeclineOrder
+Courier--> DeliverOrder
+@enduml
