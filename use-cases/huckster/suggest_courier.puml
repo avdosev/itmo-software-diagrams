@@ -1,6 +1,12 @@
 @startuml
 actor Барыга as Sidor
+actor "Торговец оружием" as GunSeller
 actor Курьер as Courier
+
+actor "Владелец товара" as Owner
+
+Owner <|-- Sidor
+Owner <|-- GunSeller
 
 package Артефактик {
     usecase "Предложить заказ курьеру" as SuggestOrder
@@ -12,16 +18,16 @@ package Артефактик {
     usecase "Принять заказ" as AcceptOrder
     usecase "Отказаться от заказа" as RejectOrder
 
-    SuggestOrder .-left-> SelectCourier: "Includes" 
+    SuggestOrder .--> SelectCourier: "Includes" 
     SuggestOrder.> SelectOrder: "Includes"
 
     SelectOrder.> OpenOrderList: "Includes"
-    SelectCourier .-left-> OpenCourierList: "Includes"
+    SelectCourier .--> OpenCourierList: "Includes"
 }
 
-Sidor --> SuggestOrder
-Sidor --> OpenOrderList
-Sidor --> OpenCourierList
+Owner--> SuggestOrder
+Owner--> OpenOrderList
+Owner--> OpenCourierList
 
 Courier--> AcceptOrder
 Courier--> RejectOrder

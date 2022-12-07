@@ -1,0 +1,45 @@
+@startuml
+actor "Информатор" as Informator
+actor Сталкер as Stalker
+
+package Артефактик {
+
+
+    usecase "Посмотреть список доступноой информации" as GetInformationList
+    
+    usecase "Выбрать нужную инфорамцию " as SelectInformation
+
+    usecase "Сделать заказ на информацию" as CreateInformationOrder
+
+    usecase "Получить уведомление о новом заказе" as OrderNotification
+
+    usecase "Принять заказ на информацию" as AcceptGunOrder
+
+    usecase "Отклонить заказ на информацию" as DeclineGunOrder
+
+    usecase "Посмотреть информацию о новом заказе" as GetOrderInfo
+
+    usecase "Открыть список предлагаемых заказов" as GetOrderList
+
+
+    CreateInformationOrder .> SelectInformation: Includes
+    SelectInformation .> GetInformationList: Includes
+
+    GetOrderInfo .-up-> GetOrderList: Includes
+    GetOrderList .> OrderNotification : Includes
+
+    AcceptGunOrder .-down-> GetOrderInfo: Includes
+    DeclineGunOrder .-down-> GetOrderInfo: Includes
+    
+ 
+}
+
+
+Informator --> OrderNotification
+Informator --> AcceptGunOrder 
+Informator --> DeclineGunOrder 
+Informator --> GetOrderList
+Stalker --> CreateInformationOrder
+Stalker --> GetInformationList
+
+@enduml
